@@ -1,2 +1,2 @@
-shutdown_nodes.sh 50
+shutdown_nodes.sh $1 
 rm *.log
