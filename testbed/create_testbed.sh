@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script will create and configure the base node
+# This cript will create and configure the base node
 # for the testbed and also configure the host.
 # Author Fredrik Bjurefors <fredrik.bjurefors@it.uu.se>
 # 2008-11-14
@@ -342,15 +342,15 @@ umount $MOUNT_PATH
 echo "Changing owner of the image file."
 chown $USER:$USER node/cow/node.img
 
-echo "NODE_USERNAME="$NODE_USERNAME > ../scripts/node.conf
+echo "NODE_USERNAME="$NODE_USERNAME > ../script/node.conf
 
 # Begin host configuration.
 echo "Configuring the host system."
 # Add line in modprobe to enable additional loopback devices.
 # /etc/modprobe.d/options in ubuntu.
 # TODO add debian solution
-if [ "`grep 'options loop max_loop=255' /etc/modprobe.d/options`" = "" ]; then
-	echo 'options loop max_loop=255' >> /etc/modprobe.d/options
+if [ "`grep 'options loop max_loop=512' /etc/modprobe.d/options`" = "" ]; then
+	echo 'options loop max_loop=512' >> /etc/modprobe.d/options
 fi
 
 # To be able to loop mount in debian 5.0.2 this line have to be added.
