@@ -1,0 +1,70 @@
+#!/bin/bash
+##
+# COPY-ON-WRITE DEVICES
+# Provides a simple interface to tear-down a COW device created
+# using the create_cow utility.
+#
+# Copyright (C) XenSource UK Ltd, October 2005
+# by Andrew Peace.
+
+set -e
+
+# configuration:
+BACKING_DIR="/tmp/cow_backing"
+mkdir -p "${BACKING_DIR}"
+
+usage() {
+    cat <<EOF
+Usage: $0 <name>
+EOF
+}
+
+# parse args:
+DEVICE="$1"
+if ! echo "${DEVICE}" | grep -q "/dev/mapper/" ; then
+    TARGET=${DEVICE}
+    DEVICE="/dev/mapper/${DEVICE}"
+else
+    TARGET=`echo ${DEVICE} | sed 's/\/dev\/mapper//g'`
+fi
+
+if [ ! -b "${DEVICE}" ] ; then
+    echo "Invalid arguments. "
+    usage 
+    exit 1
+fi
+
+# destroy the cow device:
+echo "Destroying device ${DEVICE}"
+dmsetup remove ${TARGET}
+
+# did we create the source device?
+DMSOURCEDEV_FILE="${BACKING_DIR}/${TARGET}-dmsourcedev"
+if [ -f "${DMSOURCEDEV_FILE}" ] ; then
+    # yes - tear it down:
+    DMSOURCEDEV="`cat ${DMSOURCEDEV_FILE}`"
+    dmsetup remove ${DMSOURCEDEV}
+    rm ${DMSOURCEDEV_FILE}
+fi
+
+# did we create some backing storage?
+LOOPDEV_FILE="${BACKING_DIR}/${TARGET}-loopdev"
+if [ -f "${LOOPDEV_FILE}" ] ; then
+    # yes - tear it down
+    LOOPDEV="`cat ${LOOPDEV_FILE}`"
+    losetup -d ${LOOPDEV}
+    rm ${BACKING_DIR}/${TARGET}-storage
+    rm ${LOOPDEV_FILE}
+fi
+
+# and put the source onto a loop device?
+LOOPDEV_FILE="${BACKING_DIR}/${TARGET}-loopdev-source"
+if [ -f "${LOOPDEV_FILE}" ] ; then
+    # yes - tear it down
+    LOOPDEV="`cat ${LOOPDEV_FILE}`"
+    losetup -d ${LOOPDEV}
+    rm ${LOOPDEV_FILE}
+fi
+
+# update /dev/mapper:
+dmsetup mknodes

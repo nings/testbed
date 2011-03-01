@@ -1,0 +1,11 @@
+kernel = "/boot/vmlinuz-2.6.26-2-xen-amd64"
+ramdisk = "/boot/initrd.img-2.6.26-2-xen-amd64"
+memory = 64
+name = "$NODENAME"
+vif = [ "mac=00:34:34:34:34:$NODENO, bridge=xenbr0" ]
+disk = [ "file:/media/data/haggle-data/haggle-testbed/testbed/node/cow/$NODENAME.img,sda1,w" ]
+ip = "192.168.122.$IP"
+netmask = "255.255.255.0"
+gateway = "192.168.122.1"
+hostname = "$NODENAME"
+root = "/dev/sda1 ro"

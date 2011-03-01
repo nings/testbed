@@ -1,0 +1,159 @@
+#!/bin/bash
+##
+# COPY-ON-WRITE DEVICES
+# Provides a simple interface to create a COW device from a block 
+# device or a file.
+#
+# Copyright (C) XenSource UK Ltd, October 2005
+# by Andrew Peace.
+
+set -e
+
+# configuration:
+BACKING_DIR="/tmp/cow_backing"
+mkdir -p "${BACKING_DIR}"
+
+# usage
+usage() {
+    cat <<EOF
+Usage: $0 [-q] [-w] -i <device | file> -n <name> 
+          <-s <backing-size> | -b <backing-device>> 
+   where backing-size is in megabytes.
+   and device is either a normal or device-mapper device to use as a source
+
+   If you specify a backing size then a backing file is automtaically created 
+   for you, otherwise the backing device you specify will be used.
+
+   Options:
+    -w indicates that the source device should be suspended whilst
+       the snapshot is being taken.
+    -q quiet mode; supresses progress messages and just echoes the
+       final device name to stdout on completion.
+EOF
+}
+
+# Suppress output if we're in quiet mode:
+quiet() {
+    if [ -n "${QUIET}" ] ; then
+	eval $@ &>/dev/null
+    else
+	eval $@
+    fi
+}
+
+# check a single pre-requisite and exit if not
+# usage: check_prereq <name>
+check_prereq() {
+    if ! which "$1" &>/dev/null ; then
+	echo "'$1' not on path (is it installed?)"
+	exit 1
+    fi
+}
+
+# Find a free loop device
+find_free_loop_device() {
+#    for device in `ls -1 /dev/loop*` ; do
+#	if ! losetup ${device} &>/dev/null ; then
+	#    echo ${device}
+	#    return
+	#fi
+#    done
+	sleep 1
+     losetup -f
+}
+
+# parse arguments
+while getopts "qhi:n:b:s:" opt ; do
+    case $opt in 
+	q) QUIET=TRUE ;;
+	h) usage ; exit 1 ;;
+	i) SOURCE="${OPTARG}" ;; 
+	n) TARGET="${OPTARG}" ;;
+	b) BACKING_DEVICE="${OPTARG}" ;;
+	s) BACKING_SIZE="${OPTARG}" ;;
+	w) SUSPEND=TRUE ;;
+	*) usage ; exit 1 ;;
+    esac
+done
+
+if [ -z "${SOURCE}" -o \
+     -z "${TARGET}" -o \
+     -z "${BACKING_SIZE}" ] ; then
+    echo "Incorrect number of parameters."
+    usage
+    exit 1
+fi
+
+# check pre-requisites:
+check_prereq dmsetup
+check_prereq losetup
+check_prereq blockdev
+
+# make sure device nodes are up-to-date:
+dmsetup mknodes
+
+# check that we don't have a name collision:
+if [ -e /dev/mapper/${TARGET} -o -e ${BACKING_DIR}/${TARGET}-storage ] ; then
+    echo "Unable to create COW with name ${TARGET} due to a" >&2
+    echo "name collision." >&2
+    exit 1
+fi
+
+# is the source a device or a file?
+if [ -b "${SOURCE}" ] ; then
+    quiet echo "Using device ${SOURCE}"
+    SOURCE_DEVICE="${SOURCE}"
+elif [ -f "${SOURCE}" ] ; then
+    # put the file onto a loop device:
+    if ! SOURCE_DEVICE=`find_free_loop_device` ; then
+	echo "Not enough free loop devices" >&2
+	exit 1
+    fi
+    
+    quiet echo "Putting ${SOURCE} onto loopback device ${SOURCE_DEVICE}"
+    losetup ${SOURCE_DEVICE} ${SOURCE}
+    echo ${SOURCE_DEVICE} >${BACKING_DIR}/${TARGET}-loopdev-source
+else
+    echo "${SOURCE} is not a file or block device." >&2
+    exit 1
+fi
+
+# is the source a device-mapper device?  If not, we need
+# to create a source DM device:
+SOURCE_SIZE="`blockdev --getsize ${SOURCE_DEVICE}`"
+if echo ${SOURCE_DEVICE} | grep -q "/dev/mapper/" ; then
+    SOURCE_DM_DEVICE=${SOURCE_DEVICE}
+else
+    quiet echo "Creating a device mapper device for ${SOURCE_DEVICE}"
+    SOURCE_DM_DEVICE="${TARGET}-master"
+    echo "0 ${SOURCE_SIZE} linear ${SOURCE_DEVICE} 0" | \
+	dmsetup create ${SOURCE_DM_DEVICE}
+    echo ${SOURCE_DM_DEVICE} > ${BACKING_DIR}/${TARGET}-dmsourcedev
+fi
+
+# create a backing storage file if one was not specified:
+if [ -z "${BACKING_DEVICE}" ] ; then
+    quiet echo "Creating backing file"
+    BACKING_FILE=${BACKING_DIR}/${TARGET}-storage
+    dd if=/dev/zero of=${BACKING_FILE} bs=512 count=1 seek=$((BACKING_SIZE * 1024 * 2))
+    
+    BACKING_DEVICE=`find_free_loop_device`
+    losetup ${BACKING_DEVICE} ${BACKING_FILE}
+    echo ${BACKING_DEVICE} >${BACKING_DIR}/${TARGET}-loopdev
+fi
+
+# create the snapshot:
+quiet echo "Creating snapshot"
+[ -n "${SUSPEND}"] && dmsetup suspend ${SOURCE_DM_DEVICE}
+echo "0 ${SOURCE_SIZE} snapshot /dev/mapper/${SOURCE_DM_DEVICE} ${BACKING_DEVICE} p ${BACKING_SIZE}" | \
+    dmsetup create ${TARGET}
+[ -n "${SUSPEND}"] && dmsetup resume ${SOURCE_DM_DEVICE}
+
+if [ -z "${QUIET}" ] ; then
+    echo "Device created at /dev/mapper/${TARGET}"
+else
+    echo /dev/mapper/${TARGET}
+fi
+
+# update nodes:
+dmsetup mknodes
