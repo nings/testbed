@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Expects $1 = add | remove
+
+dir=$(dirname "$0")
+. "$dir/block-common.sh"
+
+set -e - $(xenstore_read ${XENBUS_PATH}/params)
+
+# come up with a unique name for this cow:
+domname="`xenstore_read ${XENBUS_PATH}/domain`"
+dev_tran="`xenstore_read ${XENBUS_PATH}/dev | sed 's/\//-/g'`"
+cow_name="${domname}${dev_tran}"
+
+case "$command" in
+   add)
+      source=$1
+      backing_size=$2
+
+      dev=`create_cow -q -i "${source}" -n "${cow_name}" -s "${backing_size}"`
+      write_dev ${dev}
+      ;;
+
+   remove)
+      destroy_cow "${cow_name}" 
+      ;;
+esac
