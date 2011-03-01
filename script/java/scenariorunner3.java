@@ -861,9 +861,20 @@ public class scenariorunner3 implements Runnable {
 				return;
 
 			// Collect and save logs.
-			System.out.println("Collect logs");
-			mySystem("collect_logs.sh " + nodeCount + " " + iterations + " "
+			
+			String ctd = getTagContent(scenario_file, "CollectToDir");
+			if (ctd != null) {
+				System.out.println("CollectToDir...");
+				mySystem("collect_logs_dir.sh " + nodeCount + " " + iterations + " "
 					+ scenario_path);
+			}
+			else
+			{
+				System.out.println("Collect logs");
+				mySystem("collect_logs.sh " + nodeCount + " " + iterations + " "
+					+ scenario_path);	
+			}
+
 			saveLogs_ok = true;
 
 			if (cancelButton_pressed)
