@@ -94,6 +94,5 @@ for x in range(commNum):
 		if debug ==1:
 			#print node_name
 			print cmd_run_app
+		
 		os.system(cmd_run_app)
-
-#print "--"
