@@ -616,7 +616,12 @@ public class scenariorunner3 implements Runnable {
 			System.out.println("timeStamp: " + myStamp);
 		}
 		
-
+		String runTimes = getTagContent(scenario_file, "RunTimes");
+		if (runTimes != null){
+			myTimes = Integer.parseInt(runTimes);
+			System.out.println("timeStamp: " + myTimes);
+		}
+			
 		// While loop start
 		int run = 0;
 		
@@ -659,7 +664,7 @@ public class scenariorunner3 implements Runnable {
 				System.out.println(nodeCount + " have been created");
 			}
 			
-			
+
 			String appName = getTagContent(scenario_file, "Application");
 			System.out.println("Stop application:"+"stop_all_program.sh " + nodeCount +" "+ appName);
 			//Before start close all program
@@ -848,8 +853,9 @@ public class scenariorunner3 implements Runnable {
 
 				output.println("Real Start time:" + start);
 				output.println("Event length:" + event.length);
-				
-				for (i = 0; i < event.length; i++) {
+//				BIGCHANGE ADD myTimes
+//				for (i = 0; i < event.length; i++) {
+				for (i = 0; i < myTimes; i++) {
 					
 					long time_to_sleep = (start + event[i].timestamp * myStamp)
 							- done;
