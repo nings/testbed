@@ -29,12 +29,12 @@ for((i = 0; $i < $node_count; i++)); do
 		exit 1
 	fi
 
-	if ! ssh $NODE_USERNAME@$node_name " echo "$node_name""; then
+	if ! ssh $NODE_USERNAME@$node_name "cp .Haggle/$remoteName .Haggle/$node_name"; then
 		echo "Could not copy file .Haggle/$remoteName .Haggle/$node_name"
 		exit 1
 	fi
 
-	if ! ssh $NODE_USERNAME@$node_name " echo "$node_name" >> .Haggle/$remoteName "; then
+	if ! ssh $NODE_USERNAME@$node_name " echo "$node_name" >> .Haggle/$remoteName"; then
 		echo "Could not echo "$node_name" >> .Haggle/$remoteName"
 		exit 1
 	fi
