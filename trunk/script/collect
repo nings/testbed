@@ -1,1 +1,1 @@
-collect_logs.sh 100 $1 res/
+collect_logs_dir.sh 100 $1 label/
