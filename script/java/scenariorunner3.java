@@ -667,8 +667,8 @@ public class scenariorunner3 implements Runnable {
 
 			String appName = getTagContent(scenario_file, "Application");
 			System.out.println("Stop application:"+"stop_all_program.sh " + nodeCount +" "+ appName);
-			//Before start close all program
-			mySystem("stop_all_program.sh " + nodeCount +" "+ appName);
+			//Before start close all program xxxxx
+			mySystem("stop_all_program.sh " + nodeCount +" "+ "luckyme");
 			
 			// Remove logs from node.
 			System.out.println("Clean nodes");
