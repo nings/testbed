@@ -752,7 +752,6 @@ public class scenariorunner3 implements Runnable {
 /*
 			uploadLabelMit8c.py
 			uploadLabelnfc6c.py
-			
 			uploadRankCam4c.py
 			uploadRankMit.py
 */

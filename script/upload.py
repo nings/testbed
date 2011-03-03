@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # usage: generate config.xml (label depends on community and rank is the nodeId) and upload to nodes 
-
 import sys
 import datetime
 import os
@@ -8,19 +7,19 @@ import operator
 import array
 import random
 
-if len(sys.argv) != 4:
-    print "usage: python " + sys.argv[0] + " <localName> <remoteName (not path)> <number of nodes>"
+if len(sys.argv) != 5:
+    print "usage: python " + sys.argv[0] + " <localName> <remoteName (not path)> <number of nodes> <number of community>"
     print "   copy file localName to .Haggle directory on nodes."
     sys.exit(1)
 
 localName = str(sys.argv[1])
 remoteName = str(sys.argv[2])
 number_of_nodes = int(sys.argv[3])
+community=int(sys.argv[4])
 
 userName="user"
 configTemplate=localName+"config.template.xml"
 
-community=1
 members=number_of_nodes/community
 
 def sedfunc( rep , ch ):
