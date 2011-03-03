@@ -533,6 +533,8 @@ public class scenariorunner3 implements Runnable {
 				
 				// nodeCount = (maxNode - minNode) + 1;
 				nodeCount = maxNode + 1;
+				// nodeCount = maxNode;
+
 				minNode = 0;
 				System.out.println("Total nodes: " + maxNode);
 				
@@ -672,7 +674,7 @@ public class scenariorunner3 implements Runnable {
 			}
 
 			// Upload configuration file.
-			// needed
+			// upload common config.xml
 			String cfgFileName = getTagContent(scenario_file, "Configuration");
 			if (cfgFileName != null) {
 				System.out.println("config: " + cfgFileName);
@@ -698,7 +700,7 @@ public class scenariorunner3 implements Runnable {
 				System.out.println("Random community configuration file uploaded from " + scenario_path + comConf);
 			}
 			
-						//upload config according to random community detection -- label
+			//upload config according to predefined rank -- rank
 			String rankConf = getTagContent(scenario_file, "RankConfig");
 			if (rankConf != null) {
 				System.out.println("uploadRank config: " + rankConf);
@@ -707,14 +709,53 @@ public class scenariorunner3 implements Runnable {
 				System.out.println("Rank community configuration file uploaded from " + scenario_path + rankConf);
 			}
 			
-			// Upload other files xxx
+			//upload config according to predefined setting
+			String uploadLabelMit8c = getTagContent(scenario_file, "uploadLabelMit8c");
+			if (uploadLabelMit8c != null) {
+				System.out.println("config: " + uploadLabelMit8c);
+				mySystem("uploadLabelMit8c.py "+ scenario_path + " config.xml " + nodeCount);
+				System.out.println("uploadLabelMit8c.py "+ scenario_path + " config.xml " + nodeCount);
+			}
+			
+			String uploadLabelnfc6c = getTagContent(scenario_file, "uploadLabelnfc6c");
+			if (uploadLabelnfc6c != null) {
+				System.out.println("config: " + uploadLabelnfc6c);
+				mySystem("uploadLabelnfc6c.py "+ scenario_path + " config.xml " + nodeCount);
+				System.out.println("uploadLabelnfc6c.py "+ scenario_path + " config.xml " + nodeCount);
+			}
+			
+			String uploadRankMit = getTagContent(scenario_file, "uploadRankMit");
+			if (uploadRankMit != null) {
+				System.out.println("config: " + uploadRankMit);
+				mySystem("uploadRankMit.py "+ scenario_path + " config.xml " + nodeCount);
+				System.out.println("uploadRankMit.py "+ scenario_path + " config.xml " + nodeCount);
+			}
+			
+			String uploadRankCam4c = getTagContent(scenario_file, "uploadRankCam4c");
+			if (uploadRankCam4c != null) {
+				System.out.println("config: " + uploadRankCam4c);
+				mySystem("uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
+				System.out.println("uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
+			}
+			
+/*
+			uploadLabelMit8c.py
+			uploadLabelnfc6c.py
+			
+			uploadRankCam4c.py
+			uploadRankMit.py
+*/
+			
+			
+			
+			//upload other files cp one file with node_name
 			String anyFileName = getTagContent(scenario_file, "File");
 			if (anyFileName != null) {
 				System.out.println("upload: " + anyFileName);
 				mySystem("upload_file.sh " + scenario_path + anyFileName + " "+ anyFileName + " " + nodeCount);
-//				System.out.println("upload_file.sh " + scenario_path + anyFileName + " "+ anyFileName + " " + nodeCount);
 				System.out.println("Other files uploaded from " + scenario_path + anyFileName);
 			}
+
 
 			initFilter_ok = true;
 			if (cancelButton_pressed)
@@ -769,6 +810,13 @@ public class scenariorunner3 implements Runnable {
 			{
 				mySystem("run_app_by_scenario.py "+ iterations);
 				System.out.println("started by run_app_by_scenario.py " + iterations + " times: " + scenarioNum);
+			}
+			
+			String runOrder = getTagContent(scenario_file, "RunByOrder");
+			if (runOrder != null)
+			{
+				mySystem("run_app_by_order.py "+ nodeCount);
+				System.out.println("started by run_app_by_order.py " + nodeCount);
 			}
 
 
@@ -884,12 +932,15 @@ public class scenariorunner3 implements Runnable {
 			
 			System.out.println("Clean nodes to finish");
 			mySystem("clean_nodes.sh " + nodeCount);
-
-			if (startNodes != "true" || run ==(maxInteration-1)){
+			
+			String shutNode = getTagContent(scenario_file, "ShutdownNode");
+			if (shutNode != null){
 				// Shutdown all nodes.
 				System.out.println("Shutting down all nodes.");
 				mySystem("shutdown_nodes.sh " + nodeCount);
 			}
+
+
 		}
 
 		System.out.println("done");
