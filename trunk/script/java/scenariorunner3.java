@@ -643,7 +643,7 @@ public class scenariorunner3 implements Runnable {
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
-			System.out.println("Log files created. Next start/clean nodes.");
+			System.out.println("Log files created");
 
 			clearNodes_ok = true;
 			if (cancelButton_pressed)
@@ -651,13 +651,19 @@ public class scenariorunner3 implements Runnable {
 
 			// Make sure they all started! errors for 100
 			String startNodes = getTagContent(scenario_file, "startNodes");
-			if (startNodes != "true" || run == 1){
+			if (startNodes != null){
 				if (mySystem("check_nodes.sh " + nodeCount) != 0) {
 					System.out.println("Check nodes failed!");
 					return;
 				}
 				System.out.println(nodeCount + " have been created");
 			}
+			
+			
+			String appName = getTagContent(scenario_file, "Application");
+			System.out.println("Stop application:"+"stop_all_program.sh " + nodeCount +" "+ appName);
+			//Before start close all program
+			mySystem("stop_all_program.sh " + nodeCount +" "+ appName);
 			
 			// Remove logs from node.
 			System.out.println("Clean nodes");
@@ -695,9 +701,9 @@ public class scenariorunner3 implements Runnable {
 			String comConf = getTagContent(scenario_file, "ComConfig");
 			if (comConf != null) {
 				System.out.println("upload.py config:" + comConf);
-				mySystem("upload.py "+ scenario_path + " config.xml " + nodeCount);
-				System.out.println("upload.py "+ scenario_path + " config.xml " + nodeCount);
-				System.out.println("Random community configuration file uploaded from " + scenario_path + comConf);
+				mySystem("upload.py "+ scenario_path + " config.xml " + nodeCount+" "+comConf);
+				System.out.println("upload.py "+ scenario_path + " config.xml " + nodeCount+" "+comConf);
+				System.out.println("Random community configuration file uploaded from " + scenario_path +" "+comConf);
 			}
 			
 			//upload config according to predefined rank -- rank
@@ -760,8 +766,11 @@ public class scenariorunner3 implements Runnable {
 			initFilter_ok = true;
 			if (cancelButton_pressed)
 				return;
+			
 
+			
 			// Start haggle on each node:
+
 			String networkArch = getTagContent(scenario_file, "Architecture");
 			System.out.println("starting Haggle... " + networkArch);
 			for (i = 0; i < nodeCount; i++) {
@@ -784,7 +793,7 @@ public class scenariorunner3 implements Runnable {
 
 			// Get the file name/path of the application to start:
 			// needneed to do here: all nodes run the same app
-			String appName = getTagContent(scenario_file, "Application");
+//run applications
 			if (appName != null) {
 				System.out.println("starting application... " + appName);
 				for (i = 0; i < nodeCount; i++) {
@@ -793,26 +802,16 @@ public class scenariorunner3 implements Runnable {
 				}
 				System.out.println(appName + " started");			
 			}
-			
-			//run app on community
-/*
-			String appComm = getTagContent(scenario_file, "AppOnCommunity");
-			if (appComm != null) {			
-				System.out.println("starting application by community " + appComm);
-				mySystem("run_app_on_community.py");
-				System.out.println(appComm + " AppOnCommunity started by run_app_on_community.py");
-			}
-*/
-			
+					
 			//run app according cambrige inter- intra- scenario
-			String scenarioNum = getTagContent(scenario_file, "RunBySce");
+			String scenarioNum = getTagContent(scenario_file, "AppRunBySce");
 			if (scenarioNum != null)
 			{
 				mySystem("run_app_by_scenario.py "+ iterations);
 				System.out.println("started by run_app_by_scenario.py " + iterations + " times: " + scenarioNum);
 			}
 			
-			String runOrder = getTagContent(scenario_file, "RunByOrder");
+			String runOrder = getTagContent(scenario_file, "AppRunByOrder");
 			if (runOrder != null)
 			{
 				mySystem("run_app_by_order.py "+ nodeCount);
@@ -886,18 +885,18 @@ public class scenariorunner3 implements Runnable {
 			}
 
 			// stop haggle and application
-			System.out.println("stopping haggle");
+			System.out.println("stopping haggle and to stop application");
+			
+			mySystem("stop_all_program.sh " + nodeCount +" "+ appName);
+/*
 			for (i = 0; i < nodeCount; i++) {
-				/*
-				 * mySystem( "start_program_on_node.sh" + " node-" + i +
-				 * " clitool shutdown");
-				 */
 				mySystem("stop_program_on_node.sh " + "node-" + i + " haggle");
 			}
+*/
+			
 			// The reason for not placing the two ssh commands in one is to make
 			// the nodes shut down faster by allowing them to shut down
 			// simultaneously.
-
 			// Make sure all nodes have stopped running haggle:
 			for (i = 0; i < nodeCount; i++) {
 				System.out.print("  node-" + i + "... ");
