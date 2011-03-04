@@ -1,1 +1,1 @@
-time ./startsce.sh ex$1/scenario.xml
+time ./startsce.sh worktodo/$1/scenario.xml

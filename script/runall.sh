@@ -1,5 +1,5 @@
 #!/bin/sh
 
-for((i = 1; $i < 3; i++)); do
-	startsce.sh worktodo/$i/scenario.xml
+for((i = 4; $i < 6; i++)); do
+	time startsce.sh worktodo/$i/scenario.xml
 done
