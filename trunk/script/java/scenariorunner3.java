@@ -668,6 +668,7 @@ public class scenariorunner3 implements Runnable {
 			String appName = getTagContent(scenario_file, "Application");
 			System.out.println("Stop application:"+"stop_all_program.sh " + nodeCount +" "+ appName);
 			//Before start close all program xxxxx
+			//neee
 			mySystem("stop_all_program.sh " + nodeCount +" "+ "luckyme");
 			
 			// Remove logs from node.
@@ -793,6 +794,7 @@ public class scenariorunner3 implements Runnable {
 			try {
 				Thread.sleep(15000);
 			} catch (Exception e) {
+				System.out.println("Error");
 			}
 
 			// Get the file name/path of the application to start:
@@ -832,6 +834,7 @@ public class scenariorunner3 implements Runnable {
 			try {
 				Thread.sleep(15000);
 			} catch (Exception e) {
+				System.out.println("Error");
 			}
 
 			// Sort the action list on time of execution.
@@ -863,6 +866,7 @@ public class scenariorunner3 implements Runnable {
 						try {
 							Thread.sleep(time_to_sleep);
 						} catch (Exception e) {
+							System.out.println("Errors");
 						}
 					}
 //					make the topology
