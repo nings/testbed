@@ -420,6 +420,7 @@ public class scenariorunner3 implements Runnable {
 				scenario_file_name = args[i];
 			}
 		}
+		
 		if (scenario_file_name == null) {
 			System.out.println("No scenario file specified.");
 			return;
@@ -497,6 +498,7 @@ public class scenariorunner3 implements Runnable {
 		int node1 = 0;
 		int node2 = 0;
 		int nodeCount = 0;
+		int shutdownNode = 100;
 		// Get the trace file name:
 		String traceFile = getTagContent(scenario_file, "Tracefile");
 
@@ -619,7 +621,7 @@ public class scenariorunner3 implements Runnable {
 		String runTimes = getTagContent(scenario_file, "runTimes");
 		if (runTimes != null){
 			myTimes = Integer.parseInt(runTimes);
-			System.out.println("timeStamp: " + myTimes);
+			System.out.println("runTimes: " + myTimes);
 		}
 			
 		// While loop start
@@ -748,15 +750,7 @@ public class scenariorunner3 implements Runnable {
 				System.out.println("config: " + uploadRankCam4c);
 				mySystem("uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
-			}
-			
-/*
-			uploadLabelMit8c.py
-			uploadLabelnfc6c.py
-			uploadRankCam4c.py
-			uploadRankMit.py
-*/
-			
+			}		
 			
 			
 			//upload other files cp one file with node_name
@@ -873,6 +867,7 @@ public class scenariorunner3 implements Runnable {
 					mySystem(event[i].cmd);
 					done = new Date().getTime();
 					output.println(event[i].cmd + " " + done);
+					System.out.println(i+" "+event[i].cmd + " " + done);
 					runScenarioBar_value = (int) event[i].timestamp;
 				}
 				
