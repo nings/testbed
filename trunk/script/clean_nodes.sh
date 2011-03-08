@@ -18,8 +18,8 @@ nodeCount=$1
 # Remove logs from each node.
 for((i = 0; $i < $nodeCount; i++)); do
         node_name="node-"$i
-	ssh $NODE_USERNAME@$node_name "rm screenlog.0"
-	ssh $NODE_USERNAME@$node_name "rm -rf File\ drop/"
+#	ssh $NODE_USERNAME@$node_name "rm screenlog.0"
+#	ssh $NODE_USERNAME@$node_name "rm -rf File\ drop/"
         if ! ssh $NODE_USERNAME@$node_name rm .Haggle/*; then
                 echo "Could not remove logs on $node_name"
 #                exit 1
