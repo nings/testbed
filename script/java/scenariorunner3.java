@@ -617,7 +617,10 @@ public class scenariorunner3 implements Runnable {
 			myStamp = Integer.parseInt(tStamp);
 			System.out.println("timeStamp: " + myStamp);
 		}
-		int myTimes = 1000;
+		
+		int myTimes = 0;
+		int maxRuns = 0;
+		
 		String runTimes = getTagContent(scenario_file, "runTimes");
 		if (runTimes != null){
 			myTimes = Integer.parseInt(runTimes);
@@ -667,15 +670,10 @@ public class scenariorunner3 implements Runnable {
 			}
 			
 
-			String appName = getTagContent(scenario_file, "Application");
-			System.out.println("Stop application:"+"stop_all_program.sh " + nodeCount +" "+ appName);
-			//Before start close all program xxxxx
+			System.out.println("clean all nodes.");
+			//Before start close all program
 			//neee
-			mySystem("stop_all_program.sh " + nodeCount +" "+ "luckyme");
-			
-			// Remove logs from node.
-			System.out.println("Clean nodes");
-			mySystem("clean_nodes.sh " + nodeCount);
+			mySystem("cleanallnodes.sh");
 			
 			checkNodes_ok = true;
 			if (cancelButton_pressed)
@@ -794,6 +792,7 @@ public class scenariorunner3 implements Runnable {
 			// Get the file name/path of the application to start:
 			// needneed to do here: all nodes run the same app
 //run applications
+			String appName = getTagContent(scenario_file, "Application");
 			if (appName != null) {
 				System.out.println("starting application... " + appName);
 				for (i = 0; i < nodeCount; i++) {
@@ -849,9 +848,20 @@ public class scenariorunner3 implements Runnable {
 
 				output.println("Real Start time:" + start);
 				output.println("Event length:" + event.length);
+				
+
+				if (myTimes!=0)
+				{
+					maxRuns=myTimes;
+				}
+				else
+				{
+					maxRuns=event.length;	
+				}
+				
+				
 //				BIGCHANGE ADD myTimes
-//				for (i = 0; i < event.length; i++) {
-				for (i = 0; i < myTimes; i++) {
+				for (i = 0; i < maxRuns; i++) {
 					
 					long time_to_sleep = (start + event[i].timestamp * myStamp)
 							- done;
@@ -867,7 +877,7 @@ public class scenariorunner3 implements Runnable {
 					mySystem(event[i].cmd);
 					done = new Date().getTime();
 					output.println(event[i].cmd + " " + done);
-					System.out.println(i+" "+event[i].cmd + " " + done);
+//					System.out.println(i+" "+event[i].cmd + " " + done);
 					runScenarioBar_value = (int) event[i].timestamp;
 				}
 				
