@@ -611,7 +611,7 @@ public class scenariorunner3 implements Runnable {
 		if (cancelButton_pressed)
 			return;
 		
-		int myStamp = 10;
+		int myStamp = 1;
 		String tStamp = getTagContent(scenario_file, "timeStamp");
 		if (tStamp != null){
 			myStamp = Integer.parseInt(tStamp);
@@ -763,11 +763,8 @@ public class scenariorunner3 implements Runnable {
 			initFilter_ok = true;
 			if (cancelButton_pressed)
 				return;
-			
 
-			
 			// Start haggle on each node:
-
 			String networkArch = getTagContent(scenario_file, "Architecture");
 			System.out.println("starting Haggle... " + networkArch);
 			for (i = 0; i < nodeCount; i++) {
@@ -822,7 +819,6 @@ public class scenariorunner3 implements Runnable {
 			if (cancelButton_pressed)
 				return;
 			// FIXME: make sure the application started!
-
 			// Wait until application has initialized.
 			try {
 				Thread.sleep(15000);
@@ -836,6 +832,17 @@ public class scenariorunner3 implements Runnable {
 			// An array is easier to access:
 			action[] event = actions.toArray(new action[0]);
 
+			String showEvent = getTagContent(scenario_file, "ShowEvent");
+
+			if (myTimes!=0)
+			{
+				maxRuns=myTimes;
+			}
+			else
+			{
+				maxRuns=event.length;	
+			}
+				
 			// Run the scenario:
 			if (event.length > 0) {
 				System.out.println("start scenario...");
@@ -848,17 +855,6 @@ public class scenariorunner3 implements Runnable {
 
 				output.println("Real Start time:" + start);
 				output.println("Event length:" + event.length);
-				
-
-				if (myTimes!=0)
-				{
-					maxRuns=myTimes;
-				}
-				else
-				{
-					maxRuns=event.length;	
-				}
-				
 				
 //				BIGCHANGE ADD myTimes
 				for (i = 0; i < maxRuns; i++) {
@@ -877,7 +873,11 @@ public class scenariorunner3 implements Runnable {
 					mySystem(event[i].cmd);
 					done = new Date().getTime();
 					output.println(event[i].cmd + " " + done);
-//					System.out.println(i+" "+event[i].cmd + " " + done);
+					if (showEvent != null)
+					{
+						System.out.println(i+" "+event[i].cmd + "time " + done);
+					}
+					
 					runScenarioBar_value = (int) event[i].timestamp;
 				}
 				
