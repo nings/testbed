@@ -875,7 +875,7 @@ public class scenariorunner3 implements Runnable {
 					output.println(event[i].cmd + " " + done);
 					if (showEvent != null)
 					{
-						System.out.println(i+" "+event[i].cmd + "time " + done);
+						System.out.println(i+" "+event[i].cmd + " time: " + done);
 					}
 					
 					runScenarioBar_value = (int) event[i].timestamp;
