@@ -1,6 +1,6 @@
 #!/bin/sh
 #echo "Nightly Run Successful: $(date)" >> /media/bak/testbed/script/tmp/mybackup.log
-sce.sh 8
+#sce.sh 8
 sce.sh 9
 sce.sh 11
 sce.sh 13

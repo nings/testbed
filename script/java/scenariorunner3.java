@@ -612,7 +612,7 @@ public class scenariorunner3 implements Runnable {
 			return;
 		
 		int myStamp = 1;
-		String tStamp = getTagContent(scenario_file, "timeStamp");
+		String tStamp = getTagContent(scenario_file, "TimeStamp");
 		if (tStamp != null){
 			myStamp = Integer.parseInt(tStamp);
 			System.out.println("timeStamp: " + myStamp);
@@ -621,7 +621,7 @@ public class scenariorunner3 implements Runnable {
 		int myTimes = 0;
 		int maxRuns = 0;
 		
-		String runTimes = getTagContent(scenario_file, "runTimes");
+		String runTimes = getTagContent(scenario_file, "RunTimes");
 		if (runTimes != null){
 			myTimes = Integer.parseInt(runTimes);
 			System.out.println("runTimes: " + myTimes);
