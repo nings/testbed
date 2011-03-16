@@ -42,7 +42,7 @@ PACKAGES="openssh-server debootstrap nfs-kernel-server nfs-common portmap dmsetu
 # portmap and nfs-common are used to NSF mount protocols, scenarios and log-area.
 # old includes 
 #INCLUDES="tcpdump,iptables,ssh,libxml2,portmap,nfs-common,screen,sudo,libsqlite3-0,iperf,gdb,libc6,libdbus-1-3";
-INCLUDES="tcpdump,iptables,ssh,libxml2,portmap,nfs-common,screen,sudo,libsqlite3-0,iperf,gdb,libdbus-1-3,libc6";
+INCLUDES="tcpdump,iptables,ssh,libxml2,portmap,nfs-common,screen,sudo,libsqlite3-0,iperf,gdb,libdbus-1-3,libc6,libbluetooth3";
 
 
 # new includes INCLUDES="ssh,libxml2,portmap,nfs-common,screen,libsqlite3-0";
