@@ -169,7 +169,7 @@ fi
 # Bootstrap the image.
 if [ "`grep "Debian" /etc/issue`" != "" ]; then
 	# debian excludes has been removed, changed from i386.
-	if ! debootstrap --verbose --arch i386 --include=$INCLUDES $DEBIAN_VERSION $MOUNT_PATH http://ftp.uk.debian.org/debian/; then
+	if ! debootstrap --verbose --arch amd64 --include=$INCLUDES $DEBIAN_VERSION $MOUNT_PATH http://ftp.uk.debian.org/debian/; then
 		echo "Was not able to install Debian."
 		umount $MOUNT_PATH
 		exit 1;
