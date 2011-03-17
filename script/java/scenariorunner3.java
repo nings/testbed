@@ -788,13 +788,12 @@ public class scenariorunner3 implements Runnable {
 
 			// Get the file name/path of the application to start:
 			// needneed to do here: all nodes run the same app
-//run applications
+			//run applications
 			String appName = getTagContent(scenario_file, "Application");
 			if (appName != null) {
 				System.out.println("starting application... " + appName);
 				for (i = 0; i < nodeCount; i++) {
-					mySystem("start_app.sh" + " node-" + i + " "
-							+ appName);
+					mySystem("start_app.sh" + " node-" + i + " "+ appName);
 				}
 				System.out.println(appName + " started");			
 			}
@@ -804,14 +803,14 @@ public class scenariorunner3 implements Runnable {
 			if (scenarioNum != null)
 			{
 				mySystem("run_app_by_scenario.py "+ iterations);
-				System.out.println("started by run_app_by_scenario.py " + iterations + " times: " + scenarioNum);
+				System.out.println("started: run_app_by_scenario.py " + iterations + " times: " + scenarioNum);
 			}
 			
 			String runOrder = getTagContent(scenario_file, "AppRunByOrder");
 			if (runOrder != null)
 			{
 				mySystem("run_app_by_order.py "+ nodeCount);
-				System.out.println("started by run_app_by_order.py " + nodeCount);
+				System.out.println("start: run_app_by_order.py " + nodeCount);
 			}
 
 
