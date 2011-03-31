@@ -694,16 +694,8 @@ public class scenariorunner3 implements Runnable {
 				System.out.println("Normal configuration file uploaded from " + scenario_path + cfgFileName);
 			}
 			
-			//upload config according to different community detection -- label
-			String camConf = getTagContent(scenario_file, "CamConfig");
-			if (camConf != null) {
-				System.out.println("py/upload4c.py config: " + camConf);
-				mySystem("py/upload4c.py "+ scenario_path + " config.xml " + nodeCount);
-				System.out.println("upload4c.py "+ scenario_path + " config.xml " + nodeCount);
-				System.out.println("4 community configuration file uploaded from " + scenario_path + camConf);
-			}
-			
 			//upload config according to random community detection -- label
+			//the number of community is set by ComConfig
 			String comConf = getTagContent(scenario_file, "ComConfig");
 			if (comConf != null) {
 				System.out.println("py/upload.py config:" + comConf);
@@ -711,17 +703,15 @@ public class scenariorunner3 implements Runnable {
 				System.out.println("upload.py "+ scenario_path + " config.xml " + nodeCount+" "+comConf);
 				System.out.println("Random community configuration file uploaded from " + scenario_path +" "+comConf);
 			}
-			
-			//upload config according to predefined rank -- rank
-			String rankConf = getTagContent(scenario_file, "RankConfig");
-			if (rankConf != null) {
-				System.out.println("py/uploadRank config: " + rankConf);
-				mySystem("py/uploadRank.py "+ scenario_path + " config.xml " + nodeCount);
-				System.out.println("uploadRank.py "+ scenario_path + " config.xml " + nodeCount);
-				System.out.println("Rank community configuration file uploaded from " + scenario_path + rankConf);
-			}
-			
+				
 			//upload config according to predefined setting
+			String uploadRankCam4c = getTagContent(scenario_file, "uploadRankCam4c");
+			if (uploadRankCam4c != null) {
+				System.out.println("config: " + uploadRankCam4c);
+				mySystem("py/uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
+				System.out.println("uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
+			}	
+			
 			String uploadLabelMit8c = getTagContent(scenario_file, "uploadLabelMit8c");
 			if (uploadLabelMit8c != null) {
 				System.out.println("config: " + uploadLabelMit8c);
@@ -736,19 +726,14 @@ public class scenariorunner3 implements Runnable {
 				System.out.println("uploadLabelnfc6c.py "+ scenario_path + " config.xml " + nodeCount);
 			}
 			
-			String uploadRankMit = getTagContent(scenario_file, "uploadRankMit");
+			String uploadRankMit = getTagContent(scenario_file, "uploadRankMit8C");
 			if (uploadRankMit != null) {
 				System.out.println("config: " + uploadRankMit);
 				mySystem("py/uploadRankMit8c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadRankMit.py "+ scenario_path + " config.xml " + nodeCount);
 			}
 			
-			String uploadRankCam4c = getTagContent(scenario_file, "uploadRankCam4c");
-			if (uploadRankCam4c != null) {
-				System.out.println("config: " + uploadRankCam4c);
-				mySystem("py/uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
-				System.out.println("uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
-			}		
+	
 			
 			
 			//upload other files cp one file with node_name
