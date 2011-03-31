@@ -1073,63 +1073,6 @@ public class scenariorunner3 implements Runnable {
 		should_dump_to_log = false;
 		should_dump_to_log_occasionally = false;
 
-		if (is_running_with_gui) {
-			// Set up GUI:
-			JPanel topPanel = null;
-			JPanel resultPanel = null;
-			JPanel buttonPanel = null;
-
-			theFrame = new JFrame("Scenario progress");
-			if (theFrame == null)
-				return;
-
-			resultPanel = new JPanel(new GridLayout(0, 1));
-
-			parseScenario = makeNewCheckbox(resultPanel,
-					"Load scenario description");
-			magicTag = makeNewCheckbox(resultPanel, "Magic tag check");
-			scenarioFile = makeNewCheckbox(resultPanel, "Load scenario file");
-			nodeCount = makeNewCheckbox(resultPanel, "Count nodes");
-			readTraceFile = makeNewCheckbox(resultPanel, "Read trace file");
-			parseTraceFile = makeNewCheckbox(resultPanel, "Parse trace file");
-			readDOList = makeNewCheckbox(resultPanel, "Read data object list");
-			clearNodes = makeNewCheckbox(resultPanel, "Clear nodes");
-			checkNodes = makeNewCheckbox(resultPanel, "Check nodes");
-			initFilter = makeNewCheckbox(resultPanel, "Init filters");
-			startHaggle = makeNewCheckbox(resultPanel, "Start haggle");
-			startApplication = makeNewCheckbox(resultPanel, "Start application");
-			boxAndBar bb = makeNewCheckboxAndProgressBar(resultPanel,
-					"Run scenario: ");
-			runScenario = bb.box;
-			runScenarioBar = bb.bar;
-			stopApplication = makeNewCheckbox(resultPanel, "Stop application");
-			stopHaggle = makeNewCheckbox(resultPanel, "Stop haggle");
-			saveLogs = makeNewCheckbox(resultPanel, "Save logs");
-			removeLogs = makeNewCheckbox(resultPanel, "Remove logs");
-
-			buttonPanel = new JPanel();
-			buttonPanel.setLayout(new BoxLayout(buttonPanel,
-					BoxLayout.LINE_AXIS));
-
-			buttonPanel.add(Box.createHorizontalGlue());
-			cancelButton = makeNewButton(buttonPanel, "Cancel", true, false);
-			okButton = makeNewButton(buttonPanel, "OK", false, true);
-
-			resultPanel.add(buttonPanel);
-			theFrame.setContentPane(resultPanel);
-			resultPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20,
-					20));
-			theFrame.getRootPane().setDefaultButton(okButton);
-
-			theFrame.setResizable(false);
-			theFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-			theFrame.pack();
-			theFrame.setLocationRelativeTo(null);
-
-			// Show the GUI:
-			theFrame.setVisible(true);
-		}
-
 		if (should_dump_to_log) {
 			// FIXME: set up to write to log.
 		}
@@ -1149,32 +1092,6 @@ public class scenariorunner3 implements Runnable {
 			} catch (Exception e) {
 			}
 
-			if (is_running_with_gui) {
-				// Update gui
-
-				parseScenario.setSelected(parseScenario_ok);
-				magicTag.setSelected(magicTag_ok);
-				scenarioFile.setSelected(scenarioFile_ok);
-				nodeCount.setSelected(nodeCount_ok);
-				readTraceFile.setSelected(readTraceFile_ok);
-				parseTraceFile.setSelected(parseTraceFile_ok);
-				readDOList.setSelected(readDOList_ok);
-				clearNodes.setSelected(clearNodes_ok);
-				checkNodes.setSelected(checkNodes_ok);
-				initFilter.setSelected(initFilter_ok);
-				startHaggle.setSelected(startHaggle_ok);
-				startApplication.setSelected(startApplication_ok);
-				runScenario.setSelected(runScenario_ok);
-				if (runScenarioBar_max > 0) {
-					runScenarioBar.setMaximum(runScenarioBar_max);
-					runScenarioBar.setValue(runScenarioBar_value);
-				}
-				stopApplication.setSelected(stopApplication_ok);
-				stopHaggle.setSelected(stopHaggle_ok);
-				saveLogs.setSelected(saveLogs_ok);
-				removeLogs.setSelected(removeLogs_ok);
-			}
-
 			if (should_dump_to_log_occasionally
 					|| (is_finished && should_dump_to_log)) {
 				// FIXME: dump to file.
@@ -1183,10 +1100,5 @@ public class scenariorunner3 implements Runnable {
 			// FIXME: did the user press cancel?
 		}
 
-		if (is_running_with_gui) {
-			okButton.setEnabled(true);
-
-			// FIXME: Wait for OK button to be pressed
-		}
 	}
 }
