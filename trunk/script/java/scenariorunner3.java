@@ -759,7 +759,6 @@ public class scenariorunner3 implements Runnable {
 				System.out.println("Other files uploaded from " + scenario_path + anyFileName);
 			}
 
-
 			initFilter_ok = true;
 			if (cancelButton_pressed)
 				return;
