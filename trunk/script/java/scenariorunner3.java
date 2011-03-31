@@ -710,13 +710,6 @@ public class scenariorunner3 implements Runnable {
 				System.out.println("config: " + uploadRankCam4c);
 				mySystem("py/uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
-			}	
-			
-			String uploadLabelMit8c = getTagContent(scenario_file, "uploadLabelMit8c");
-			if (uploadLabelMit8c != null) {
-				System.out.println("config: " + uploadLabelMit8c);
-				mySystem("py/uploadLabelMit8c.py "+ scenario_path + " config.xml " + nodeCount);
-				System.out.println("uploadLabelMit8c.py "+ scenario_path + " config.xml " + nodeCount);
 			}
 			
 			String uploadLabelnfc6c = getTagContent(scenario_file, "uploadLabelnfc6c");
@@ -732,9 +725,6 @@ public class scenariorunner3 implements Runnable {
 				mySystem("py/uploadRankMit8c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadRankMit.py "+ scenario_path + " config.xml " + nodeCount);
 			}
-			
-	
-			
 			
 			//upload other files cp one file with node_name
 			String anyFileName = getTagContent(scenario_file, "File");
