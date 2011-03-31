@@ -697,8 +697,8 @@ public class scenariorunner3 implements Runnable {
 			//upload config according to different community detection -- label
 			String camConf = getTagContent(scenario_file, "CamConfig");
 			if (camConf != null) {
-				System.out.println("upload4c.py config: " + camConf);
-				mySystem("upload4c.py "+ scenario_path + " config.xml " + nodeCount);
+				System.out.println("py/upload4c.py config: " + camConf);
+				mySystem("py/upload4c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("upload4c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("4 community configuration file uploaded from " + scenario_path + camConf);
 			}
@@ -706,8 +706,8 @@ public class scenariorunner3 implements Runnable {
 			//upload config according to random community detection -- label
 			String comConf = getTagContent(scenario_file, "ComConfig");
 			if (comConf != null) {
-				System.out.println("upload.py config:" + comConf);
-				mySystem("upload.py "+ scenario_path + " config.xml " + nodeCount+" "+comConf);
+				System.out.println("py/upload.py config:" + comConf);
+				mySystem("py/upload.py "+ scenario_path + " config.xml " + nodeCount+" "+comConf);
 				System.out.println("upload.py "+ scenario_path + " config.xml " + nodeCount+" "+comConf);
 				System.out.println("Random community configuration file uploaded from " + scenario_path +" "+comConf);
 			}
@@ -715,8 +715,8 @@ public class scenariorunner3 implements Runnable {
 			//upload config according to predefined rank -- rank
 			String rankConf = getTagContent(scenario_file, "RankConfig");
 			if (rankConf != null) {
-				System.out.println("uploadRank config: " + rankConf);
-				mySystem("uploadRank.py "+ scenario_path + " config.xml " + nodeCount);
+				System.out.println("py/uploadRank config: " + rankConf);
+				mySystem("py/uploadRank.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadRank.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("Rank community configuration file uploaded from " + scenario_path + rankConf);
 			}
@@ -725,28 +725,28 @@ public class scenariorunner3 implements Runnable {
 			String uploadLabelMit8c = getTagContent(scenario_file, "uploadLabelMit8c");
 			if (uploadLabelMit8c != null) {
 				System.out.println("config: " + uploadLabelMit8c);
-				mySystem("uploadLabelMit8c.py "+ scenario_path + " config.xml " + nodeCount);
+				mySystem("py/uploadLabelMit8c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadLabelMit8c.py "+ scenario_path + " config.xml " + nodeCount);
 			}
 			
 			String uploadLabelnfc6c = getTagContent(scenario_file, "uploadLabelnfc6c");
 			if (uploadLabelnfc6c != null) {
 				System.out.println("config: " + uploadLabelnfc6c);
-				mySystem("uploadLabelnfc6c.py "+ scenario_path + " config.xml " + nodeCount);
+				mySystem("py/uploadLabelnfc6c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadLabelnfc6c.py "+ scenario_path + " config.xml " + nodeCount);
 			}
 			
 			String uploadRankMit = getTagContent(scenario_file, "uploadRankMit");
 			if (uploadRankMit != null) {
 				System.out.println("config: " + uploadRankMit);
-				mySystem("uploadRankMit.py "+ scenario_path + " config.xml " + nodeCount);
+				mySystem("py/uploadRankMit8c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadRankMit.py "+ scenario_path + " config.xml " + nodeCount);
 			}
 			
 			String uploadRankCam4c = getTagContent(scenario_file, "uploadRankCam4c");
 			if (uploadRankCam4c != null) {
 				System.out.println("config: " + uploadRankCam4c);
-				mySystem("uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
+				mySystem("py/uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
 			}		
 			
@@ -1038,35 +1038,9 @@ public class scenariorunner3 implements Runnable {
 	public static int runScenarioBar_max, runScenarioBar_value;
 
 	public static void main(String[] args) {
-		JFrame theFrame = null;
-		JCheckBox parseScenario = null, magicTag = null, scenarioFile = null, nodeCount = null, readTraceFile = null, parseTraceFile = null, readDOList = null, clearNodes = null, checkNodes = null, initFilter = null, startHaggle = null, startApplication = null, runScenario = null, stopApplication = null, stopHaggle = null, saveLogs = null, removeLogs = null;
-		JButton okButton = null, cancelButton = null;
-		JProgressBar runScenarioBar = null;
 
 		main_args = args;
 		is_finished = false;
-
-		parseScenario_ok = false;
-		magicTag_ok = false;
-		scenarioFile_ok = false;
-		nodeCount_ok = false;
-		readTraceFile_ok = false;
-		parseTraceFile_ok = false;
-		readDOList_ok = false;
-		clearNodes_ok = false;
-		checkNodes_ok = false;
-		initFilter_ok = false;
-		startHaggle_ok = false;
-		startApplication_ok = false;
-		runScenario_ok = false;
-		stopApplication_ok = false;
-		stopHaggle_ok = false;
-		saveLogs_ok = false;
-		removeLogs_ok = false;
-		okButton_pressed = false;
-		cancelButton_pressed = false;
-		runScenarioBar_max = 0;
-		runScenarioBar_value = 0;
 
 		// FIXME: are we running with a GUI, etc.?
 		is_running_with_gui = false;
