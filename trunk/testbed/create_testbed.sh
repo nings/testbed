@@ -5,6 +5,7 @@
 # 2008-11-14
 # This script must be executed as su.
 
+
 USER=$1
 
 INSTALL_PATH=`pwd`
