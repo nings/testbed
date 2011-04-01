@@ -1,0 +1,11 @@
+<Scenario>
+	<Magic>haggle</Magic>
+	<Architecture>haggler -c -f -I</Architecture>
+	<CamConfig>1</CamConfig>
+	<File>test.txt</File>
+	<Tracefile>camx.trc</Tracefile>
+	<Iterations>1</Iterations>
+	<Warmup>300</Warmup>
+	<AppRunByOrder>true</AppRunByOrder>
+	<RunTimes>10000</RunTimes>
+</Scenario>

@@ -1,0 +1,11 @@
+<Scenario>
+	<Magic>haggle</Magic>
+	<Architecture>hagglel -c -f -I</Architecture>
+	<uploadLabelnfc6c>1</uploadLabelnfc6c>
+	<File>test.txt</File>
+	<Tracefile>infx.trc</Tracefile>
+	<Iterations>1</Iterations>
+	<Warmup>300</Warmup>
+	<AppRunByOrder>true</AppRunByOrder>
+	<RunTimes>10000</RunTimes>
+</Scenario>
