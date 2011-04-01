@@ -1,0 +1,11 @@
+<Scenario>
+	<Magic>haggle</Magic>
+	<Architecture>haggleb -c -f -I</Architecture>
+	<ComConfig>1</ComConfig>
+	<File>test.txt</File>
+	<Tracefile>wsx.trc</Tracefile>
+	<Iterations>1</Iterations>
+	<Warmup>300</Warmup>
+	<AppRunByOrder>true</AppRunByOrder>
+	<RunTimes>10000</RunTimes>
+</Scenario>
