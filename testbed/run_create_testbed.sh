@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo ./create_testbed_xen4.sh `whoami`
+sudo ./create_testbed.sh `whoami`
