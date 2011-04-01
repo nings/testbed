@@ -341,7 +341,7 @@ public class scenariorunner3 implements Runnable {
 					// path += "/" + path_element[i];
 					path += path_element[i] + "/";
 			}
-		// path += "/";
+		path = "/"+path;
 		return path;
 	}
 
@@ -488,7 +488,7 @@ public class scenariorunner3 implements Runnable {
 		if (cancelButton_pressed)
 			return;
 
-		System.out.println("scenario: " + scenario_path);
+		System.out.println("scenario path: " + scenario_path);
 
 		nodeCount_ok = true;
 		if (cancelButton_pressed)
