@@ -30,7 +30,7 @@ NODE_USERNAME=user
 BRIDGENAME=xenbr0
 NETID=192.168.122
 BRIDGEIP=$NETID.1
-DEBIAN_VERSION=lenny
+DEBIAN_VERSION=squeeze
 UBUNTU_VERSION=gutsy
 
 # PACKAGES is a list of packages required to run the testbed. Note: No comma between package names.
@@ -42,7 +42,7 @@ PACKAGES="openssh-server debootstrap nfs-kernel-server nfs-common portmap dmsetu
 
 # portmap and nfs-common are used to NSF mount protocols, scenarios and log-area.
 # old includes 
-INCLUDES="tcpdump,iptables,ssh,libxml2,portmap,nfs-common,screen,sudo,libsqlite3-0,iperf,gdb,libdbus-1-3,libbluetooth2,libc6";
+INCLUDES="tcpdump,iptables,ssh,libxml2,portmap,nfs-common,screen,sudo,libsqlite3-0,iperf,gdb,libdbus-1-3,libc6";
 # new includes INCLUDES="ssh,libxml2,portmap,nfs-common,screen,libsqlite3-0";
 
 #EXCLUDES_DEBIAN="gcc-4.2-base,gcc-4.3-base,make";
@@ -167,7 +167,7 @@ fi
 # Bootstrap the image.
 if [ "`grep "Debian" /etc/issue`" != "" ]; then
 	# debian excludes has been removed, changed from i386.
-	if ! debootstrap --verbose --arch i386 --include=$INCLUDES $DEBIAN_VERSION $MOUNT_PATH http://ftp.uk.debian.org/debian; then
+	if ! debootstrap --verbose --arch amd64 --include=$INCLUDES $DEBIAN_VERSION $MOUNT_PATH http://ftp.uk.debian.org/debian; then
 		echo "Was not able to install Debian."
 		umount $MOUNT_PATH
 		exit 1;
