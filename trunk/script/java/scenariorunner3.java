@@ -705,21 +705,28 @@ public class scenariorunner3 implements Runnable {
 			}
 				
 			//upload config according to predefined setting
-			String uploadRankCam4c = getTagContent(scenario_file, "uploadRankCam4c");
+			String uploadRankCam4c = getTagContent(scenario_file, "uploadCam4c");
 			if (uploadRankCam4c != null) {
 				System.out.println("config: " + uploadRankCam4c);
 				mySystem("py/uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadRankCam4c.py "+ scenario_path + " config.xml " + nodeCount);
 			}
 			
-			String uploadLabelnfc6c = getTagContent(scenario_file, "uploadLabelnfc6c");
+			String uploadLabelnfc6c = getTagContent(scenario_file, "uploadInfc6c");
 			if (uploadLabelnfc6c != null) {
 				System.out.println("config: " + uploadLabelnfc6c);
-				mySystem("py/uploadLabelnfc6c.py "+ scenario_path + " config.xml " + nodeCount);
+				mySystem("py/uploadRankInfc6c.py "+ scenario_path + " config.xml " + nodeCount);
 				System.out.println("uploadLabelnfc6c.py "+ scenario_path + " config.xml " + nodeCount);
 			}
 			
-			String uploadRankMit = getTagContent(scenario_file, "uploadRankMit8C");
+			String uploadLabelnfc8c = getTagContent(scenario_file, "uploadInfc8c");
+			if (uploadLabelnfc8c != null) {
+				System.out.println("config: " + uploadLabelnfc8c);
+				mySystem("py/uploadRanklnfc8c.py "+ scenario_path + " config.xml " + nodeCount);
+				System.out.println("uploadLabelnfc8c.py "+ scenario_path + " config.xml " + nodeCount);
+			}
+			
+			String uploadRankMit = getTagContent(scenario_file, "uploadMit8c");
 			if (uploadRankMit != null) {
 				System.out.println("config: " + uploadRankMit);
 				mySystem("py/uploadRankMit8c.py "+ scenario_path + " config.xml " + nodeCount);
@@ -776,14 +783,14 @@ public class scenariorunner3 implements Runnable {
 			String scenarioNum = getTagContent(scenario_file, "AppRunBySce");
 			if (scenarioNum != null)
 			{
-				mySystem("run_app_by_scenario.py "+ iterations);
+				mySystem("py/run_app_by_scenario.py "+ iterations);
 				System.out.println("started: run_app_by_scenario.py " + iterations + " times: " + scenarioNum);
 			}
 			
 			String runOrder = getTagContent(scenario_file, "AppRunByOrder");
 			if (runOrder != null)
 			{
-				mySystem("run_app_by_order.py "+ nodeCount);
+				mySystem("py/run_app_by_order.py "+ nodeCount);
 				System.out.println("start: run_app_by_order.py " + nodeCount);
 			}
 
@@ -919,6 +926,14 @@ public class scenariorunner3 implements Runnable {
 			System.out.println("Clean nodes to finish");
 			mySystem("clean_nodes.sh " + nodeCount);
 			
+			String rmXml = getTagContent(scenario_file, "RmXml");
+			if (rmXml != null){
+				// Shutdown all nodes.
+				System.out.println("RM XML.");
+				mySystem("cd "+scenario_path+"&& rm node-*.xml");
+			}
+			
+			
 			String shutNode = getTagContent(scenario_file, "ShutdownNode");
 			if (shutNode != null){
 				// Shutdown all nodes.
@@ -944,64 +959,6 @@ public class scenariorunner3 implements Runnable {
 
 		// Tell the main thread that we're done:
 		is_finished = true;
-	}
-
-	public static JCheckBox makeNewCheckbox(JPanel inPanel, String title) {
-		JCheckBox retval;
-		retval = new JCheckBox(title);
-		retval.setSelected(false);
-		retval.setEnabled(false);
-		inPanel.add(retval);
-		return retval;
-	}
-
-	static private class boxAndBar {
-		public JCheckBox box;
-		public JProgressBar bar;
-
-		boxAndBar(JCheckBox _box, JProgressBar _bar) {
-			box = _box;
-			bar = _bar;
-		}
-	};
-
-	public static boxAndBar makeNewCheckboxAndProgressBar(JPanel inPanel,
-			String title) {
-		JCheckBox box;
-		JProgressBar bar;
-		JPanel panel;
-
-		panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
-
-		box = new JCheckBox(title);
-		box.setSelected(false);
-		box.setEnabled(false);
-
-		bar = new JProgressBar(0, 0);
-		bar.setValue(0);
-		bar.setEnabled(true);
-		// FIXME: set indeterminate state:
-		// bar.set...
-
-		panel.add(box);
-		panel.add(bar);
-		panel.add(Box.createHorizontalGlue());
-
-		inPanel.add(panel);
-
-		return new boxAndBar(box, bar);
-	}
-
-	public static JButton makeNewButton(JPanel inPanel, String title,
-			boolean enabled, boolean isDefault) {
-		JButton retval;
-		retval = new JButton(title);
-		retval.setSelected(false);
-		retval.setEnabled(enabled);
-		retval.setDefaultCapable(isDefault);
-		inPanel.add(retval);
-		return retval;
 	}
 
 	public static boolean parseScenario_ok, magicTag_ok, scenarioFile_ok,

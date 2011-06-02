@@ -1,5 +1,5 @@
-javac scenariorunner3.java 
-jar cf scenariorunner3.jar *.class
-mv scenariorunner3.jar ../ 
+javac scenariosimplerunner.java 
+jar cf scenariosimplerunner.jar *.class
+mv scenariosimplerunner.jar ../ 
 rm *.class
 
