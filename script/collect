@@ -1,2 +1,2 @@
-#collect_logs_dir.sh 100 $1 /media/temp/res/
-collect_logs.sh 100 $1 /media/temp/res/
+collect_logs_dir.sh 37 $1 /media/data/collect/
+#collect_logs.sh 37 $1 /media/temp/res/

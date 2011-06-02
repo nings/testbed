@@ -42,8 +42,8 @@ for i in range(community):
 		
 		node_name="node-"+str(node_number)
 		#rank is the node id random.randrange(1,100,1)
-		#nodeRank=str(node_number)
-		nodeRank=str(random.randrange(1,100,1))
+		nodeRank=str(node_number)
+		#nodeRank=str(random.randrange(1,100,1))
 		
 		fileName=localName+node_name+".xml"
 		

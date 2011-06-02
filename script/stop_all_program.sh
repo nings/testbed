@@ -20,7 +20,7 @@ application=$2
 for((i = 0; $i < $nodeCount; i++)); do
 	node_name=node-$i
 	echo $node_name
-	ssh $NODE_USERNAME@$node_name "ps ax | grep SCREEN | grep haggle | awk '{print \$1}' | xargs kill"
+#	ssh $NODE_USERNAME@$node_name "ps ax | grep SCREEN | grep haggle | awk '{print \$1}' | xargs kill"
 	ssh $NODE_USERNAME@$node_name "ps ax | grep SCREEN | grep $application | awk '{print \$1}' | xargs kill"
 done
 
